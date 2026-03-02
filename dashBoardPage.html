@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ParkEase Dashboard</title>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+
+  <body class="signOut-page">
+    <div class="nav-set">
+      <nav class="navbar">
+        <div class="logo">ParkEase</div>
+
+        <ul class="nav-links">
+          <li><a href="register.html">Register Car</a></li>
+
+          <li><a href="reports.html">Admin</a></li>
+          <li><a href="batterySection.html">Battery Section</a></li>
+          <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+          <li><a href="signout.html" class="signOut-link">Check Out</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <span class="user-role">Admin</span>
+          <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+      </nav>
+
+      <div class="dashboard">
+        <div class="form-section">
+          <h2>Car Sign Out</h2>
+
+          <form id="signOutForm">
+            <label>Receiver Name</label>
+            <input type="text" id="receiverName" />
+            <label>Role</label>
+            <input type="text" id="dashboardRole" />
+
+            <label>Receipt Number</label>
+            <input type="text" id="receiptNumber" />
+
+            <label>Phone Number</label>
+            <input type="text" id="phoneNumber" />
+
+            <label>Gender</label>
+            <select id="gender">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+
+            <label>NIN Number</label>
+            <input type="text" id="ninNumber" />
+
+            <label>Arrival Time</label>
+            <input type="datetime-local" id="arrivalTime" />
+
+            <button type="submit" class="btn-submit">Generate Receipt</button>
+          </form>
+        </div>
+
+        <div class="receipt-section">
+          <h2>Receipt</h2>
+          <div id="receiptContent">
+            <p>No receipt generated yet.</p>
+          </div>
+          <div>
+            <button class="btn-submit">PRINT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="test.js"></script>
+  </body>
+</html>
