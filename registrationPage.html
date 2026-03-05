@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration</title>
-    <link rel="stylesheet" href="style1.css" />
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="dash" href="dashBoardPage.html">
   </head>
 
   <body class="register-page">
@@ -33,23 +34,23 @@
 
         <form id="registrationForm">
           <label for="driverName">Driver Name</label>
-          <input type="text" id="driverName" name="driverName" />
+          <input type="text" id="driverName" name="driverName" required minlength="2" />
           <label for="numberPlate">Number Plate</label>
-          <input type="text" id="numberPlate" name="numberPlate" />
+          <input type="text" id="numberPlate" name="numberPlate" required pattern="[A-Za-z0-9\- ]+" title="Alphanumeric characters only" />
           <label for="vehicleModel">Vehicle Model</label>
-          <input type="text" id="vehicleModel" name="vehicleModel" />
+          <input type="text" id="vehicleModel" name="vehicleModel" required />
           <label for="vehicleColor">Vehicle Color</label>
-          <input type="text" id="vehicleColor" name="vehicleColor" />
+          <input type="text" id="vehicleColor" name="vehicleColor" required />
           <label for="arrivalTime">Arrival Time</label>
-          <input type="time" id="arrivalTime" name="arrivalTime" />
+          <input type="time" id="arrivalTime" name="arrivalTime" required />
           <label for="date">Date</label>
-          <input type="date" id="date" name="date" />
+          <input type="date" id="date" name="date" required />
           <label for="phoneNumber">Phone Number</label>
-          <input type="tel" id="phoneNumber" name="phoneNumber" />
+          <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="\d{10}" title="10 digit phone number" />
           <label for="ninNumber">NIN Number (Required for Boda Bodas)</label>
-          <input type="text" id="ninNumber" name="ninNumber" />
+          <input type="text" id="ninNumber" name="ninNumber" pattern="\d{8,10}" title="8–10 digit NIN" />
           <label for="vehicleType">Vehicle Type</label>
-          <select id="vehicleType" name="vehicleType">
+          <select id="vehicleType" name="vehicleType" required>
             <option value="">-- Select Vehicle Type --</option>
             <option value="Truck">Truck</option>
             <option value="Personal Car">Personal Car</option>
@@ -62,5 +63,6 @@
         </form>
       </div>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>

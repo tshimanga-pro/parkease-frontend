@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>ParkEase Dashboard</title>
-    <link rel="stylesheet" href="style1.css" />
+    <link rel="stylesheet" href="style2.css" />
   </head>
 
   <body class="signOut-page">
@@ -31,27 +31,28 @@
 
           <form id="signOutForm">
             <label>Receiver Name</label>
-            <input type="text" id="receiverName" />
+            <input type="text" id="receiverName" required />
             <label>Role</label>
-            <input type="text" id="dashboardRole" />
+            <input type="text" id="dashboardRole" required />
 
             <label>Receipt Number</label>
-            <input type="text" id="receiptNumber" />
+            <input type="text" id="receiptNumber" required pattern="[A-Za-z0-9\-]+" title="Alphanumeric receipt number" />
 
             <label>Phone Number</label>
-            <input type="text" id="phoneNumber" />
+            <input type="text" id="phoneNumber" required pattern="\d{10}" title="10 digit phone number" />
 
             <label>Gender</label>
-            <select id="gender">
+            <select id="gender" required>
+              <option value="">--Select--</option>
               <option>Male</option>
               <option>Female</option>
             </select>
 
             <label>NIN Number</label>
-            <input type="text" id="ninNumber" />
+            <input type="text" id="ninNumber" required pattern="\d{8,10}" title="8–10 digit NIN" />
 
             <label>Arrival Time</label>
-            <input type="datetime-local" id="arrivalTime" />
+            <input type="datetime-local" id="arrivalTime" required />
 
             <button type="submit" class="btn-submit">Generate Receipt</button>
           </form>
@@ -63,7 +64,7 @@
             <p>No receipt generated yet.</p>
           </div>
           <div>
-            <button class="btn-submit">PRINT</button>
+            <button class="btn-submit">Print Receipt</button>
           </div>
         </div>
       </div>
