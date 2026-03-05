@@ -237,7 +237,7 @@ tbody tr:hover {
 
     padding: 20px 60px;
 
-    background: linear-gradient(135deg, rgb(124, 116, 116), rgb(124, 116, 116));
+    background: linear-gradient(135deg, rgb(51, 48, 48), rgb(51, 48, 48));
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -285,7 +285,7 @@ tbody tr:hover {
 
 .nav-links a:hover {
     background-color: rgb(255, 219, 17);
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     padding: 10px;
     border-radius: 7px;
 }
@@ -307,7 +307,7 @@ tbody tr:hover {
 .logout-btn {
     padding: 8px 16px;
     background-color: rgb(255, 219, 17);
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     border-radius: 20px;
     text-decoration: none;
     font-weight: 600;
@@ -344,7 +344,7 @@ tbody tr:hover {
 }
 
 .battery-page h1 {
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     margin-bottom: 30px;
 }
 
@@ -360,14 +360,14 @@ tbody tr:hover {
     border: none;
     border-radius: 30px;
     background-color: rgb(255, 219, 17);
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s ease;
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, rgb(124, 116, 116), rgb(124, 116, 116));
+    background: linear-gradient(135deg, rgb(51, 48, 48), rgb(51, 48, 48));
     color: white;
 }
 
@@ -408,7 +408,7 @@ select {
 .price-display p {
     font-size: 28px;
     font-weight: bold;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 /* Customer Card */
@@ -421,7 +421,7 @@ select {
 
 .battery-form-card h2 {
     margin-bottom: 25px;
-    border-bottom: 2px solid rgb(124, 116, 116);
+    border-bottom: 2px solid rgb(51, 48, 48);
     padding-bottom: 10px;
 }
 
@@ -445,7 +445,7 @@ select {
     padding: 14px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, rgb(124, 116, 116), rgb(124, 116, 116));
+    background: linear-gradient(135deg, rgb(51, 48, 48), rgb(51, 48, 48));
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -466,7 +466,7 @@ select {
 .battery1-page .battery-link,
 .admin-page .admin-link {
     background-color: #F9FAFB;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     padding: 10px;
     border-radius: 7px;
     font-weight: bold;
@@ -504,7 +504,7 @@ select {
 
 .option-card h3 {
     margin-bottom: 15px;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 .option-card select {
@@ -524,7 +524,7 @@ select {
 .price-display p {
     font-size: 20px;
     font-weight: 600;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 /* CUSTOMER FORM CARD */
@@ -537,7 +537,7 @@ select {
 
 .tyre-form-card h2 {
     margin-bottom: 20px;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 .tyre-form-card label {
@@ -560,7 +560,7 @@ select {
     padding: 12px;
     border-radius: 10px;
     border: none;
-    background-color: rgb(124, 116, 116);
+    background-color: rgb(51, 48, 48);
     color: white;
     font-weight: 600;
     cursor: pointer;
@@ -584,7 +584,7 @@ select {
 }
 
 .receipt-panel h3 {
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
     margin-bottom: 20px;
 }
 
@@ -599,7 +599,7 @@ select {
     padding: 12px;
     border-radius: 10px;
     border: none;
-    background-color: rgb(124, 116, 116);
+    background-color: rgb(51, 48, 48);
     color: white;
     font-weight: 600;
     cursor: pointer;
@@ -644,14 +644,14 @@ select {
 .card h3 {
     margin: 0;
     font-size: 14px;
-    color: gray;
+    color: rgb(51, 48, 48);
 }
 
 .card p {
     font-size: 28px;
     font-weight: bold;
     margin: 10px 0 0;
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 /* ============================= */
@@ -674,7 +674,7 @@ select {
 }
 
 .btn-primary {
-    background: rgb(124, 116, 116);
+    background: rgb(51, 48, 48);
     color: #ffffff;
 }
 
@@ -685,7 +685,7 @@ select {
 .btn-outline {
     background: transparent;
     border: 2px solid rgb(124, 116, 116);
-    color: rgb(124, 116, 116);
+    color: rgb(51, 48, 48);
 }
 
 .btn-outline:hover {
@@ -710,7 +710,7 @@ table {
 }
 
 thead {
-    background: rgb(124, 116, 116);
+    background: rgb(51, 48, 48);
     color: #ffffff;
 }
 
