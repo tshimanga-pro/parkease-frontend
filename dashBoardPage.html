@@ -11,11 +11,10 @@
         <div class="logo">ParkEase</div>
 
         <ul class="nav-links">
-          <li><a href="register.html">Register Car</a></li>
-
+          <li><a href="register.html">Register Vehicle</a></li>
           <li><a href="reports.html">Admin</a></li>
-          <li><a href="batterySection.html">Battery Section</a></li>
           <li><a href="tyreClinic.html">Tyre Clinic</a></li>
+          <li><a href="batterySection.html">Battery Section</a></li>
           <li><a href="signout.html" class="signOut-link">Check Out</a></li>
         </ul>
 
@@ -27,7 +26,7 @@
 
       <div class="dashboard">
         <div class="form-section">
-          <h2>Car Sign Out</h2>
+          <h2>Vehicle Sign Out</h2>
 
           <form id="signOutForm">
             <label>Receiver Name</label>
@@ -36,10 +35,22 @@
             <input type="text" id="dashboardRole" required />
 
             <label>Receipt Number</label>
-            <input type="text" id="receiptNumber" required pattern="[A-Za-z0-9\-]+" title="Alphanumeric receipt number" />
+            <input
+              type="text"
+              id="receiptNumber"
+              required
+              pattern="[A-Za-z0-9\-]+"
+              title="Alphanumeric receipt number"
+            />
 
             <label>Phone Number</label>
-            <input type="text" id="phoneNumber" required pattern="\d{10}" title="10 digit phone number" />
+            <input
+              type="text"
+              id="phoneNumber"
+              required
+              pattern="\d{10}"
+              title="10 digit phone number"
+            />
 
             <label>Gender</label>
             <select id="gender" required>
@@ -49,7 +60,13 @@
             </select>
 
             <label>NIN Number</label>
-            <input type="text" id="ninNumber" required pattern="\d{8,10}" title="8–10 digit NIN" />
+            <input
+              type="text"
+              id="ninNumber"
+              required
+              pattern="\d{8,10}"
+              title="8–10 digit NIN"
+            />
 
             <label>Arrival Time</label>
             <input type="datetime-local" id="arrivalTime" required />
