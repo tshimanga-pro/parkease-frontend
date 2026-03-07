@@ -37,8 +37,8 @@ function validateRegistrationForm(form) {
       errors.push("Date cannot be in the past.");
     }
   }
-  if (!phoneNumber.match(/^\d{10}$/)) {
-    errors.push("Phone number must be exactly 10 digits.");
+  if (!phoneNumber.match(/^(\+256|0)(7|6)\d{8}$/)) {
+    errors.push("Phone number must be a valid Ugandan phone number.");
   }
   if (!vehicleType) {
     errors.push("Please select a vehicle type.");
@@ -66,7 +66,7 @@ function validateSignOutForm(form) {
   if (!receiverName) errors.push("Receiver name is required.");
   if (!dashboardRole) errors.push("Role is required.");
   if (!receiptNumber) errors.push("Receipt number is required.");
-  if (!phoneNumber.match(/^\d{10}$/))
+  if (!phoneNumber.match(/^(\+256|0)(7|6)\d{8}$/))
     errors.push("Phone number must be 10 digits.");
   if (!ninNumber) errors.push("NIN number is required.");
   if (!arrivalTime) errors.push("Arrival time is required.");
