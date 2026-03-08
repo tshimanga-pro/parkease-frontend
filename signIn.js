@@ -1,105 +1,63 @@
-import { useState } from "react";
+(() => {
+  const form = document.getElementById("loginForm");
+  const messageEl = document.getElementById("loginMessage");
 
-export default function RegistrationForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [terms, setTerms] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  function showMessage(text, type = "error") {
+    messageEl.textContent = text;
+    messageEl.className = "form-message";
+    messageEl.classList.add(type === "success" ? "success" : "error");
+  }
 
-  const validate = () => {
-    if (!name.trim()) return "Name is required";
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      return "Valid email is required";
-    if (password.length < 6) return "Password must be at least 6 characters";
-    if (password !== confirm) return "Passwords do not match";
-    if (!terms) return "You must agree to the terms";
-    return null;
-  };
+  function clearMessage() {
+    messageEl.textContent = "";
+    messageEl.className = "form-message";
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const err = validate();
-    if (err) {
-      setError(err);
+  function validate(values) {
+    const errors = [];
+
+    if (!values.email) {
+      errors.push("Email address is required.");
+    } else {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(values.email)) {
+        errors.push("Please enter a valid email address.");
+      }
+    }
+
+    if (!values.password) {
+      errors.push("Password is required.");
+    } else if (values.password.length < 6) {
+      errors.push("Password must be at least 6 characters.");
+    }
+
+    return errors;
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    clearMessage();
+
+    const values = {
+      email: form.email.value.trim(),
+      password: form.password.value,
+    };
+
+    const errors = validate(values);
+    if (errors.length) {
+      showMessage(errors.join(" "), "error");
       return;
     }
-    // Demo: save to localStorage
-    const users = JSON.parse(localStorage.getItem("demo_users") || "[]");
-    if (users.find((u) => u.email === email)) {
-      setError("Email already registered");
-      return;
-    }
-    const newUser = { id: Date.now().toString(), name, email, phone, password }; // store plaintext for demo (not for production)
-    users.push(newUser);
-    localStorage.setItem("demo_users", JSON.stringify(users));
-    setSuccess("Registration successful. You can log in now.");
-    setError(null);
-  };
 
-  return (
-    <form onSubmit={handleSubmit} className="form">
-      <h2>Register</h2>
-      {error && <div className="error">{error}</div>}
-      {success && <div className="success">{success}</div>}
+    // Example: store a simple "logged in" flag in localStorage.
+    // In a real app, you'd authenticate against a server.
+    localStorage.setItem("parkEaseLoggedIn", "true");
 
-      <div className="field">
-        <label>Name</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="field">
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div className="field">
-        <label>Phone</label>
-        <input value={phone} onChange={(e) => setPhone(e.target.value)} />
-      </div>
-      <div className="field">
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div className="field">
-        <label>Confirm Password</label>
-        <input
-          type="password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          required
-        />
-      </div>
-      <div className="field checkbox">
-        <input
-          id="terms"
-          type="checkbox"
-          checked={terms}
-          onChange={(e) => setTerms(e.target.checked)}
-        />
-        <label htmlFor="terms">I agree to the terms and privacy policy</label>
-      </div>
+    showMessage("Login successful! Redirecting...", "success");
 
-      <button type="submit">Create account</button>
-
-      <p>
-        Already have an account? <a href="/login">Log in</a>
-      </p>
-    </form>
-  );
-}
+    setTimeout(() => {
+      // Redirect to dashboard after successful login
+      window.location.href = "dashBoardPage.html";
+    }, 800);
+  });
+})();

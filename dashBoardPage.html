@@ -1,93 +1,58 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ParkEase Dashboard</title>
     <link rel="stylesheet" href="style2.css" />
   </head>
 
-  <body class="signOut-page">
+  <body class="register-page">
     <div class="nav-set">
       <nav class="navbar">
-        <div class="logo">ParkEase</div>
+        <a href="dashBoardPage.html" class="logo" aria-label="ParkEase dashboard">
+          <!-- <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="#" aria-hidden="true"> -->
+            <!-- <path d="M3 12h18M3 18h18M3 6h18" stroke="currentColor" stroke-width="2" /> -->
+            <!-- <path d="M8 12v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/> -->
+            <!-- <path d="M16 12v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/> -->
+          </svg>
+          <span>ParkEase</span>
+        </a>
 
         <ul class="nav-links">
-          <li><a href="register.html">Register Vehicle</a></li>
-          <li><a href="reports.html">Admin</a></li>
-          <li><a href="tyreClinic.html">Tyre Clinic</a></li>
-          <li><a href="batterySection.html">Battery Section</a></li>
-          <li><a href="signout.html" class="signOut-link">Check Out</a></li>
+          <li><a href="dashBoardPage.html">Dashboard</a></li>
+          <li><a href="vehicleRegistration.html">Register Vehicle</a></li>
+          <!-- <li><a href="reports.html">Admin</a></li> -->
+          <li><a href="#">Battery Section</a></li>
+          <li><a href="#">Tyre Clinic</a></li>
+          <!-- <li><a href="signout.html">Check Out</a></li> -->
         </ul>
 
         <div class="nav-right">
-          <span class="user-role">Admin</span>
-          <a href="index.html" class="logout-btn">Logout</a>
+          <span class="user-role" id="currentRole"></span>
+          <a href="logIn.html" class="logout-btn">Logout</a>
         </div>
       </nav>
 
-      <div class="dashboard">
-        <div class="form-section">
-          <h2>Vehicle Sign Out</h2>
+      <div class="form-card">
+        <h2>Dashboard</h2>
 
-          <form id="signOutForm">
-            <label>Receiver Name</label>
-            <input type="text" id="receiverName" required />
-            <label>Role</label>
-            <input type="text" id="dashboardRole" required />
-
-            <label>Receipt Number</label>
-            <input
-              type="text"
-              id="receiptNumber"
-              required
-              pattern="[A-Za-z0-9\-]+"
-              title="Alphanumeric receipt number"
-            />
-
-            <label>Phone Number</label>
-            <input
-              type="text"
-              id="phoneNumber"
-              required
-              pattern="\d{10}"
-              title="10 digit phone number"
-            />
-
-            <label>Gender</label>
-            <select id="gender" required>
-              <option value="">--Select--</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-
-            <label>NIN Number</label>
-            <input
-              type="text"
-              id="ninNumber"
-              required
-              pattern="\d{8,10}"
-              title="8–10 digit NIN"
-            />
-
-            <label>Arrival Time</label>
-            <input type="datetime-local" id="arrivalTime" required />
-
-            <button type="submit" class="btn-submit">Generate Receipt</button>
-          </form>
+        <div class="dashboard-tabs">
+          <label for="roleSelect">Your role</label>
+          <select id="roleSelect" class="role-select">
+            <option value="">-- Select role --</option>
+            <option value="Admin">Admin</option>
+            <option value="Section Manager">Section Manager</option>
+            <option value="Parking Attendant">Parking Attendant</option>
+          </select>
         </div>
 
-        <div class="receipt-section">
-          <h2>Receipt</h2>
-          <div id="receiptContent">
-            <p>No receipt generated yet.</p>
-          </div>
-          <div>
-            <button class="btn-submit">Print Receipt</button>
-          </div>
+        <div id="dashboardContent" class="dashboard-content">
+          <p class="dashboard-help">Select a role to see your dashboard actions.</p>
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
-    <script src="test.js"></script>
+    <script src="dashboard.js"></script>
   </body>
 </html>

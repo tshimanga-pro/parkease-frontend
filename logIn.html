@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Park Ease Project</title>
+    <title>User Login</title>
     <link rel="stylesheet" href="style2.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
@@ -22,18 +22,19 @@
     <a href="signOut.html">SIGN OUT</a>
     <a href="reports.html">REPORTS</a> -->
     <div class="container">
-      <form class="form-card" id="loginForm">
+      <form class="form-card" id="loginForm" novalidate>
         <h2>Sign In Portal</h2>
+
+        <div id="loginMessage" class="form-message" aria-live="polite"></div>
 
         <div class="input-group">
           <label for="email">Email address</label>
-          <input type="text" id="userName" />
-          <small id="emailHelp"></small>
+          <input type="email" id="email" name="email" required placeholder="you@example.com" />
         </div>
 
         <div class="input-group">
           <label for="password">Password</label>
-          <input type="password" id="password" />
+          <input type="password" id="password" name="password" required minlength="6" placeholder="Enter password" />
         </div>
 
         <button type="submit" class="btn-submit">Submit</button>
