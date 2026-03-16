@@ -43,17 +43,15 @@
       </header>
 
       <section class="dashboard-content">
-        <div class="cards-grid">
+        <div class="cards-grid cards-row">
           <div class="stat-card">
             <div class="stat-card__label">Total Vehicles Parked</div>
             <div class="stat-card__value" id="totalVehicles">0</div>
           </div>
-
           <div class="stat-card">
             <div class="stat-card__label">Today's Total Revenue (UGX)</div>
             <div class="stat-card__value" id="totalRevenue">UGX 0</div>
           </div>
-
           <div class="stat-card progress-card">
             <div class="stat-card__label">Available Parking Slots</div>
             <div class="progress-card__bar">
@@ -65,6 +63,45 @@
             </div>
           </div>
         </div>
+        <section class="quick-actions">
+          <h3>Quick Actions</h3>
+          <div class="quick-actions__buttons">
+            <button class="quick-action-btn" onclick="window.location.href='vehicleRegistration.html'">Register Arrival</button>
+            <button class="quick-action-btn" onclick="window.location.href='vehicleSignOut.html'">Vehicle Sign-out</button>
+            <button class="quick-action-btn" onclick="window.print()">Print Daily Summary</button>
+          </div>
+        </section>
+        <section class="recent-arrivals">
+          <h3>Recent Arrivals</h3>
+          <table class="arrivals-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Plate Number</th>
+                <th>Vehicle Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>08:15</td>
+                <td>UAX 123A</td>
+                <td>Personal Car</td>
+                <td><span class="status-badge parked">Parked</span></td>
+                <td><button class="actions-menu" title="More actions">⋮</button></td>
+              </tr>
+              <tr>
+                <td>08:22</td>
+                <td>UBR 456B</td>
+                <td>Boda Boda</td>
+                <td><span class="status-badge signed-out">Signed Out</span></td>
+                <td><button class="actions-menu" title="More actions">⋮</button></td>
+              </tr>
+              <!-- More rows can be dynamically added here -->
+            </tbody>
+          </table>
+        </section>
 
         <section id="liveFeed">
           <h3>Live Activity</h3>

@@ -75,7 +75,7 @@
       <p class="dashboard-help">Role not recognized. Please select a supported role.</p>
     `;
   }
-
+              <li><a href="vehicleSignOut.html">Check Out</a></li>
   roleSelect.addEventListener("change", (event) => {
     setRole(event.target.value);
   });

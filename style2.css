@@ -1,3 +1,62 @@
+.quick-actions {
+  background: linear-gradient(90deg, #fbbf24 0%, #f87171 100%);
+  padding: 18px 24px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 18px rgba(251, 191, 36, 0.15);
+}
+.quick-actions h3 {
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+.quick-actions__buttons {
+  display: flex;
+  gap: 18px;
+}
+.quick-action-btn {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.quick-action-btn:hover {
+  background: #fbbf24;
+  color: #1e293b;
+}
+.cards-row {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: 24px;
+}
+.cards-row .stat-card {
+  flex: 1 1 0;
+  min-width: 180px;
+}
+/* Status badges for Recent Arrivals */
+.status-badge {
+  display: inline-block;
+  padding: 0.25em 0.7em;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+.status-badge.parked {
+  background: #22c55e;
+  color: #fff;
+}
+.status-badge.signed-out {
+  background: #64748b;
+  color: #fff;
+}
 /* General layout */
 html,
 body {
@@ -12,7 +71,7 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
+  background: linear-gradient(135deg, #0245e2 0%, #1e293b 55%, #0245e2 100%);
   color: #eef2ff;
   display: flex;
   flex-direction: column;
