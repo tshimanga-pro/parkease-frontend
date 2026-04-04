@@ -36,36 +36,28 @@
           <div id="formMessage" class="form-message" aria-live="polite"></div>
 
           <label for="driverName">Driver Name</label>
-          <input
-            type="text"
-            id="driverName"
-            name="driverName"
-            required
-            minlength="2"
-          />
+          <input type="text" id="driverName" name="driverName" minlength="2" />
           <label for="numberPlate">Number Plate</label>
           <input
             type="text"
             id="numberPlate"
             name="numberPlate"
-            required
             pattern="[A-Za-z0-9\- ]+"
             title="Alphanumeric characters only"
           />
           <label for="vehicleModel">Vehicle Model</label>
-          <input type="text" id="vehicleModel" name="vehicleModel" required />
+          <input type="text" id="vehicleModel" name="vehicleModel" />
           <label for="vehicleColor">Vehicle Color</label>
-          <input type="text" id="vehicleColor" name="vehicleColor" required />
+          <input type="text" id="vehicleColor" name="vehicleColor" />
           <label for="arrivalTime">Arrival Time</label>
-          <input type="time" id="arrivalTime" name="arrivalTime" required />
+          <input type="time" id="arrivalTime" name="arrivalTime" />
           <label for="date">Date</label>
-          <input type="date" id="date" name="date" required />
+          <input type="date" id="date" name="date" />
           <label for="phoneNumber">Phone Number</label>
           <input
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            required
             pattern="[0-9]{10}"
             title="10 digit phone number"
           />
@@ -78,7 +70,7 @@
             title="8–10 digit NIN"
           />
           <label for="vehicleType">Vehicle Type</label>
-          <select id="vehicleType" name="vehicleType" required>
+          <select id="vehicleType" name="vehicleType">
             <option value="">-- Select Vehicle Type --</option>
             <option value="Truck">Truck</option>
             <option value="Personal Car">Personal Car</option>
@@ -89,7 +81,7 @@
 
           <button type="submit" class="btn-submit">Register Vehicle</button>
           <button type="button" id="printReceipt" class="btn-submit" disabled>
-            Print Receipt
+            Print Ticket
           </button>
         </form>
 

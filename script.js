@@ -1,11 +1,14 @@
 (() => {
   const storageKey = "parkEaseRegistrations";
   const form = document.getElementById("registrationForm");
+  if (!form) {
+    return;
+  }
   const messageEl = document.getElementById("formMessage");
   const entriesBody = document.getElementById("entriesBody");
   const entriesTable = document.querySelector(".entries-table");
   const emptyState = document.querySelector(".saved-entries .empty-state");
-  const printButton = document.getElementById("printReceipt");
+  // const printButton = document.getElementById("printReceipt");
   let lastSavedEntry = null;
 
   function showMessage(text, kind = "success") {
