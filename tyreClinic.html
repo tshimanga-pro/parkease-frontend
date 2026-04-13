@@ -77,18 +77,12 @@
         </div>
     </div>
     <script>
+        const TRANSACTIONS_KEY = 'tyreClinicTransactions';
+
         let serviceTotals = {
             pressure: 0,
             puncture: 0,
             valves: 0
-        };
-
-        const tyrePrices = {
-            14: { Basic: 100000, Standard: 150000, Premium: 200000 },
-            15: { Basic: 120000, Standard: 170000, Premium: 220000 },
-            16: { Basic: 140000, Standard: 190000, Premium: 240000 },
-            17: { Basic: 160000, Standard: 210000, Premium: 260000 },
-            18: { Basic: 180000, Standard: 230000, Premium: 280000 }
         };
 
         const serviceCharges = {
@@ -97,24 +91,51 @@
             valves: 5000
         };
 
+        const serviceNames = {
+            pressure: 'Pressure Check',
+            puncture: 'Puncture Fixing',
+            valves: 'Valves Replacement'
+        };
+
+        function getSavedTransactions() {
+            try {
+                const raw = localStorage.getItem(TRANSACTIONS_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (error) {
+                console.warn('Failed to read tyre clinic transactions from localStorage', error);
+                return [];
+            }
+        }
+
+        function saveTransactions(transactions) {
+            localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
+        }
+
         document.getElementById('calculateBtn').addEventListener('click', function() {
             const size = document.getElementById('tyreSize').value;
             const model = document.getElementById('tyreModel').value;
-            const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
+            const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+                .map(cb => cb.value)
+                .filter(service => serviceCharges.hasOwnProperty(service));
 
             if (!size || !model) {
                 alert('Please select tyre size and model.');
                 return;
             }
 
-            const tyrePrice = tyrePrices[size][model];
-            let servicesTotal = 0;
-            services.forEach(service => {
+            if (!selectedServices.length) {
+                alert('Please select at least one service: Pressure, Puncture Fixing, or Valves.');
+                return;
+            }
+
+            const servicesTotal = selectedServices.reduce((sum, service) => {
                 const charge = serviceCharges[service];
-                servicesTotal += charge;
                 serviceTotals[service] += charge;
-            });
-            const grandTotal = tyrePrice + servicesTotal;
+                return sum + charge;
+            }, 0);
+
+            const tyrePrice = 0;
+            const grandTotal = servicesTotal;
 
             document.getElementById('tyrePrice').textContent = `Tyre Price: UGX ${tyrePrice.toLocaleString()}`;
             document.getElementById('servicesTotal').textContent = `Services Total: UGX ${servicesTotal.toLocaleString()}`;
@@ -123,11 +144,28 @@
 
             updateServiceTotals();
 
-            // Add to activities
             const activityList = document.getElementById('activityList');
             const li = document.createElement('li');
-            li.textContent = `Tyre ${size}" ${model} - Services: ${services.join(', ')} - Total: UGX ${grandTotal.toLocaleString()}`;
+            li.textContent = `Tyre ${size}\" ${model} - Services: ${selectedServices.map(service => serviceNames[service]).join(', ')} - Total: UGX ${grandTotal.toLocaleString()}`;
             activityList.appendChild(li);
+
+            const transaction = {
+                id: `txn-${Date.now()}`,
+                date: new Date().toISOString(),
+                tyreSize: size,
+                tyreModel: model,
+                services: selectedServices.map(service => ({
+                    code: service,
+                    label: serviceNames[service],
+                    charge: serviceCharges[service]
+                })),
+                servicesTotal,
+                grandTotal
+            };
+
+            const transactions = getSavedTransactions();
+            transactions.push(transaction);
+            saveTransactions(transactions);
         });
 
         function updateServiceTotals() {
