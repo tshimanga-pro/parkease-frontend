@@ -18,8 +18,8 @@
         </nav>
 
         <div class="dashboard-user">
-          <div class="dashboard-user__role">Parking Attendant</div>
-          <div class="dashboard-user__email">attendant@example.com</div>
+          <div class="dashboard-user__role" id="userName">Parking Attendant</div>
+          <div class="dashboard-user__email" id="userEmail">attendant@example.com</div>
           <a href="logIn.html" class="logout-btn">Logout</a>
         </div>
       </aside>
@@ -144,6 +144,18 @@
     </div>
 
     <script>
+      (function () {
+        const user = JSON.parse(localStorage.getItem("parkEaseUser") || "null");
+        const userNameEl = document.getElementById("userName");
+        const userEmailEl = document.getElementById("userEmail");
+
+        if (user && userNameEl && userEmailEl) {
+          const displayName = [user.firstName, user.surname].filter(Boolean).join(" ");
+          userNameEl.textContent = displayName || user.email || "Parking Attendant";
+          userEmailEl.textContent = user.email || "attendant@example.com";
+        }
+      })();
+
       const state = {
         totalVehicles: 42,
         revenue: 1524000,

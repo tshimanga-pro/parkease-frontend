@@ -8,7 +8,9 @@
   const entriesBody = document.getElementById("entriesBody");
   const entriesTable = document.querySelector(".entries-table");
   const emptyState = document.querySelector(".saved-entries .empty-state");
-  // const printButton = document.getElementById("printReceipt");
+  const vehicleImageInput = document.getElementById("vehicleImage");
+  const vehicleImagePreview = document.getElementById("vehicleImagePreview");
+  const printButton = document.getElementById("printReceipt");
   let lastSavedEntry = null;
 
   function showMessage(text, kind = "success") {
@@ -20,6 +22,24 @@
   function clearMessage() {
     messageEl.textContent = "";
     messageEl.className = "form-message";
+  }
+
+  if (vehicleImageInput && vehicleImagePreview) {
+    vehicleImageInput.addEventListener("change", () => {
+      const selectedFile = vehicleImageInput.files[0];
+      if (!selectedFile || !selectedFile.type.startsWith("image/")) {
+        vehicleImagePreview.style.display = "none";
+        vehicleImagePreview.src = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        vehicleImagePreview.src = reader.result;
+        vehicleImagePreview.style.display = "block";
+      };
+      reader.readAsDataURL(selectedFile);
+    });
   }
 
   function setPrintEnabled(enabled) {
@@ -88,6 +108,15 @@
 
   function saveRegistrations(entries) {
     localStorage.setItem(storageKey, JSON.stringify(entries));
+  }
+
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
   }
 
   function formatDate(value) {
@@ -203,30 +232,50 @@
   function resetForm() {
     form.reset();
     clearMessage();
+    if (vehicleImagePreview) {
+      vehicleImagePreview.style.display = "none";
+      vehicleImagePreview.src = "";
+    }
   }
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     clearMessage();
 
+    const imageFile = vehicleImageInput ? vehicleImageInput.files[0] : null;
     const values = getFormValues();
     const errors = validateForm(values);
+
+    if (!imageFile) {
+      errors.push("A vehicle image must be uploaded.");
+    } else if (!imageFile.type.startsWith("image/")) {
+      errors.push("Please upload a valid image file for the vehicle.");
+    }
 
     if (errors.length) {
       showMessage(errors.join(" "), "error");
       return;
     }
 
-    const entries = getRegistrations();
-    entries.push(values);
-    saveRegistrations(entries);
+    readFileAsDataURL(imageFile)
+      .then((imageDataUrl) => {
+        values.imageName = imageFile.name;
+        values.imageDataUrl = imageDataUrl;
 
-    lastSavedEntry = values;
-    setPrintEnabled(true);
+        const entries = getRegistrations();
+        entries.push(values);
+        saveRegistrations(entries);
 
-    renderEntries(entries);
-    showMessage("Registration saved to local storage.", "success");
-    resetForm();
+        lastSavedEntry = values;
+        setPrintEnabled(true);
+
+        renderEntries(entries);
+        showMessage("Registration saved to local storage.", "success");
+        resetForm();
+      })
+      .catch(() => {
+        showMessage("Unable to read the vehicle image file. Please try again.", "error");
+      });
   });
 
   if (printButton) {

@@ -79,6 +79,20 @@
             <option value="Boda Boda">Boda Boda</option>
           </select>
 
+          <label for="vehicleImage">Vehicle Image</label>
+          <input
+            type="file"
+            id="vehicleImage"
+            name="vehicleImage"
+            accept="image/*"
+            required
+          />
+          <img
+            id="vehicleImagePreview"
+            alt="Vehicle preview"
+            style="display:none; max-width:100%; margin-top:0.75rem; border-radius:8px;"
+          />
+
           <button type="submit" class="btn-submit">Register Vehicle</button>
           <button type="button" id="printReceipt" class="btn-submit" disabled>
             Print Ticket

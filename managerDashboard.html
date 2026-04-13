@@ -21,8 +21,8 @@
         </nav>
 
         <div class="dashboard-user">
-          <div class="dashboard-user__role">Service Manager</div>
-          <div class="dashboard-user__email">manager@example.com</div>
+          <div class="dashboard-user__role" id="userName">Service Manager</div>
+          <div class="dashboard-user__email" id="userEmail">manager@example.com</div>
           <a href="homepage.html" class="logout-btn">Logout</a>
         </div>
       </aside>
@@ -120,5 +120,20 @@
         </section>
       </main>
     </div>
+    <script>
+      (function () {
+        const user = JSON.parse(localStorage.getItem("parkEaseUser") || "null");
+        const userNameEl = document.getElementById("userName");
+        const userEmailEl = document.getElementById("userEmail");
+
+        if (!user || !userNameEl || !userEmailEl) {
+          return;
+        }
+
+        const displayName = [user.firstName, user.surname].filter(Boolean).join(" ");
+        userNameEl.textContent = displayName || user.email || "Service Manager";
+        userEmailEl.textContent = user.email || "manager@example.com";
+      })();
+    </script>
   </body>
 </html>

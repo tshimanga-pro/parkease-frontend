@@ -54,8 +54,19 @@
               id="price"
               name="price"
               placeholder="Enter battery price in UGX"
-              
             />
+          </div>
+
+          <div class="form-group">
+            <label for="batteryImage">Battery Image</label>
+            <input
+              type="file"
+              id="batteryImage"
+              name="batteryImage"
+              accept="image/*"
+              required
+            />
+            <img id="batteryImagePreview" alt="Battery preview" class="image-preview" style="display:none; max-width:100%; margin-top:0.5rem; border-radius:6px;" />
           </div>
 
           <button type="submit" class="btn">Register Battery</button>
@@ -84,9 +95,10 @@
       (function () {
         const form = document.getElementById("batteryForm");
         const messageEl = document.getElementById("batteryMessage");
+        const batteryImagePreview = document.getElementById("batteryImagePreview");
         const storageKey = "parkEaseBatteries";
 
-        if (!form || !messageEl) {
+        if (!form || !messageEl || !batteryImagePreview) {
           return;
         }
 
@@ -101,6 +113,22 @@
           messageEl.className = "form-message";
         }
 
+        form.batteryImage.addEventListener("change", function () {
+          const selectedFile = this.files[0];
+          if (!selectedFile || !selectedFile.type.startsWith("image/")) {
+            batteryImagePreview.style.display = "none";
+            batteryImagePreview.src = "";
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function () {
+            batteryImagePreview.src = reader.result;
+            batteryImagePreview.style.display = "block";
+          };
+          reader.readAsDataURL(selectedFile);
+        });
+
         function getBatteries() {
           try {
             const raw = localStorage.getItem(storageKey);
@@ -113,6 +141,15 @@
 
         function saveBatteries(batteries) {
           localStorage.setItem(storageKey, JSON.stringify(batteries));
+        }
+
+        function readFileAsDataURL(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+          });
         }
 
         function isValidUgandaShillings(value) {
@@ -131,6 +168,7 @@
           clearMessage();
 
           const priceValue = form.price.value;
+          const imageFile = form.batteryImage.files[0];
 
           if (!isValidUgandaShillings(priceValue)) {
             showMessage(
@@ -140,19 +178,38 @@
             return;
           }
 
-          const battery = {
-            batteryType: form.batteryType.value,
-            batteryBrand: form.batteryBrand.value,
-            price: priceValue,
-            createdAt: new Date().toISOString(),
-          };
+          if (!imageFile) {
+            showMessage("Please select a battery image file before submitting.", "error");
+            return;
+          }
 
-          const batteries = getBatteries();
-          batteries.push(battery);
-          saveBatteries(batteries);
+          if (!imageFile.type.startsWith("image/")) {
+            showMessage("Please upload a valid image file for the battery.", "error");
+            return;
+          }
 
-          showMessage("Battery registered and saved to local storage.", "success");
-          form.reset();
+          readFileAsDataURL(imageFile)
+            .then((imageDataUrl) => {
+              const battery = {
+                batteryType: form.batteryType.value,
+                batteryBrand: form.batteryBrand.value,
+                price: priceValue,
+                imageDataUrl,
+                imageName: imageFile.name,
+                createdAt: new Date().toISOString(),
+              };
+
+              const batteries = getBatteries();
+              batteries.push(battery);
+              saveBatteries(batteries);
+
+              showMessage("Battery registered and saved to local storage.", "success");
+              form.reset();
+              batteryImagePreview.style.display = "none";
+            })
+            .catch(() => {
+              showMessage("Unable to read the battery image file. Please try again.", "error");
+            });
         });
       })();
     </script>

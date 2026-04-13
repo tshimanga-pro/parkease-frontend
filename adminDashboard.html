@@ -16,7 +16,7 @@
         </div>
       </div>
               <div class="nav-right">
-          <!-- <span class="user-role">Admin</span> -->
+          <span class="user-role" id="userName">Admin</span>
           <a href="homepage.html" class="logout-btn">Logout</a>
         </div>
       <div class="admin-header__actions">
@@ -176,6 +176,30 @@
           date.getDate()
         );
       }
+
+      function getLoggedInUser() {
+        try {
+          return JSON.parse(localStorage.getItem("parkEaseUser") || "null");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function populateUserName() {
+        const user = getLoggedInUser();
+        const userNameEl = document.getElementById("userName");
+        if (!userNameEl) return;
+
+        const displayName = [user?.firstName, user?.surname]
+          .filter(Boolean)
+          .join(" ")
+          .trim();
+
+        userNameEl.textContent =
+          displayName || user?.email || "Admin";
+      }
+
+      populateUserName();
 
       function randomFromSeed(seed) {
         let x = (seed * 9301 + 49297) % 233280;
