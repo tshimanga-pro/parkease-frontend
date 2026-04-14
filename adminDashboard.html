@@ -75,7 +75,7 @@
 
         <article class="metric-card">
           <div class="metric-card__header">
-            <h3 class="metric-card__title">Battery Hire</h3>
+            <h3 class="metric-card__title">Battery Transaction</h3>
           </div>
           <div class="metric-card__value" id="batteryValue">UGX 950</div>
           <div class="metric-card__delta delta-positive" id="batteryDelta">
@@ -141,6 +141,76 @@
         tyre: 1320,
         battery: 950,
       };
+
+      const SIGNOUT_STORAGE_KEY = "parkEaseSignouts";
+
+      function getSignoutRecords() {
+        try {
+          const raw = localStorage.getItem(SIGNOUT_STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function getSignoutRecordsForDate(dateKey) {
+        return getSignoutRecords().filter((record) => record.signoutDate === dateKey);
+      }
+
+      function getLocalParkingRevenue(dateKey) {
+        return getSignoutRecordsForDate(dateKey).reduce(
+          (sum, record) => sum + Number(record.fee || 0),
+          0,
+        );
+      }
+
+      function getTyreTransactions() {
+        try {
+          const raw = localStorage.getItem("tyreClinicTransactions");
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function getLocalTyreRevenue(dateKey) {
+        return getTyreTransactions()
+          .filter((transaction) => {
+            const transactionDate = new Date(transaction.date).toISOString().slice(0, 10);
+            return transactionDate === dateKey;
+          })
+          .reduce((sum, transaction) => {
+            const amount = Number(transaction.grandTotal || 0);
+            return sum + (Number.isFinite(amount) ? amount : 0);
+          }, 0);
+      }
+
+      function getBatteryRegistrations() {
+        try {
+          const raw = localStorage.getItem("parkEaseBatteries");
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function getLocalBatteryRevenue(dateKey) {
+        return getBatteryRegistrations()
+          .filter((battery) => {
+            const batteryDate = new Date(battery.createdAt).toISOString().slice(0, 10);
+            return batteryDate === dateKey;
+          })
+          .reduce((sum, battery) => {
+            const priceValue = String(battery.price || "").replace(/[^0-9]/g, "");
+            return sum + (Number(priceValue) || 0);
+          }, 0);
+      }
+
+      function getPreviousDayRevenue(date) {
+        const previous = new Date(date);
+        previous.setDate(previous.getDate() - 1);
+        return getLocalParkingRevenue(formatDateKey(previous));
+      }
 
       let currentDate = new Date();
 
@@ -243,6 +313,36 @@
         };
         const metrics = data.metrics;
 
+        const dateKey = formatDateKey(date);
+        const previousDate = new Date(date);
+        previousDate.setDate(previousDate.getDate() - 1);
+        const previousDateKey = formatDateKey(previousDate);
+
+        const parkingRevenue = getLocalParkingRevenue(dateKey);
+        const previousParkingRevenue = getLocalParkingRevenue(previousDateKey);
+        const parkingDelta = previousParkingRevenue === 0 ? 0 : ((parkingRevenue - previousParkingRevenue) / previousParkingRevenue) * 100;
+
+        const tyreRevenue = getLocalTyreRevenue(dateKey);
+        const previousTyreRevenue = getLocalTyreRevenue(previousDateKey);
+        const tyreDelta = previousTyreRevenue === 0 ? 0 : ((tyreRevenue - previousTyreRevenue) / previousTyreRevenue) * 100;
+
+        const batteryRevenue = getLocalBatteryRevenue(dateKey);
+        const previousBatteryRevenue = getLocalBatteryRevenue(previousDateKey);
+        const batteryDelta = previousBatteryRevenue === 0 ? 0 : ((batteryRevenue - previousBatteryRevenue) / previousBatteryRevenue) * 100;
+
+        metrics.parking = {
+          value: parkingRevenue,
+          deltaPct: parkingDelta,
+        };
+        metrics.tyre = {
+          value: tyreRevenue,
+          deltaPct: tyreDelta,
+        };
+        metrics.battery = {
+          value: batteryRevenue,
+          deltaPct: batteryDelta,
+        };
+
         Object.entries(metrics).forEach(([key, { value, deltaPct }]) => {
           const valueEl = metricElements[key]?.value;
           const deltaEl = metricElements[key]?.delta;
@@ -337,10 +437,23 @@
       }
 
       async function updateSignouts(date) {
-        const data = (await fetchSignoutData(date)) || {
-          signouts: generateMockSignouts(date),
-        };
-        renderSignouts(data.signouts);
+        const localSignouts = getSignoutRecordsForDate(formatDateKey(date));
+        renderSignouts(
+          localSignouts.map((record) => ({
+            receipt: record.receiptNumber,
+            plate: record.numberPlate,
+            inTime: new Date(record.arrivalTime).toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            outTime: new Date(record.outTime).toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            duration: record.duration,
+            fee: Number(record.fee || 0),
+          })),
+        );
       }
 
       async function adjustDate(days) {

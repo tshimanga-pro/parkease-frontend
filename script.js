@@ -1,5 +1,6 @@
 (() => {
   const storageKey = "parkEaseRegistrations";
+  const TICKET_COUNTER_KEY = "parkEaseTicketCounter";
   const form = document.getElementById("registrationForm");
   if (!form) {
     return;
@@ -67,6 +68,7 @@
         </head>
         <body>
           <h1>ParkEase Receipt</h1>
+          <p><strong>Ticket:</strong> ${entry.ticketNumber || entry.receiptId || "—"}</p>
           <p><strong>Date:</strong> ${formatDate(entry.date)} ${entry.arrivalTime || ""}</p>
           <table>
             <tr><th>Driver</th><td>${entry.driverName}</td></tr>
@@ -110,6 +112,22 @@
     localStorage.setItem(storageKey, JSON.stringify(entries));
   }
 
+  function getTicketCounter() {
+    const raw = localStorage.getItem(TICKET_COUNTER_KEY);
+    const value = Number(raw);
+    return Number.isInteger(value) && value >= 0 ? value : 0;
+  }
+
+  function setTicketCounter(value) {
+    localStorage.setItem(TICKET_COUNTER_KEY, String(value));
+  }
+
+  function getNextTicketNumber() {
+    const nextNumber = getTicketCounter() + 1;
+    setTicketCounter(nextNumber);
+    return `TCKT-${String(nextNumber).padStart(6, "0")}`;
+  }
+
   function readFileAsDataURL(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -129,6 +147,32 @@
     });
   }
 
+  function getCurrentDateValue() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function getCurrentTimeValue() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  function setCurrentDateTimeFields() {
+    if (form.date) {
+      form.date.value = getCurrentDateValue();
+    }
+    if (form.arrivalTime) {
+      form.arrivalTime.value = getCurrentTimeValue();
+    }
+  }
+
+  setCurrentDateTimeFields();
+
   function renderEntries(entries) {
     if (!entries.length) {
       entriesTable.hidden = true;
@@ -147,6 +191,7 @@
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${formatDate(entry.date)} ${entry.arrivalTime || ""}</td>
+          <td>${entry.ticketNumber || entry.receiptId || ""}</td>
           <td>${entry.driverName}</td>
           <td>${entry.numberPlate}</td>
           <td>${entry.vehicleType}</td>
@@ -220,8 +265,8 @@
       numberPlate: form.numberPlate.value.trim(),
       vehicleModel: form.vehicleModel.value.trim(),
       vehicleColor: form.vehicleColor.value.trim(),
-      arrivalTime: form.arrivalTime.value,
-      date: form.date.value,
+      arrivalTime: getCurrentTimeValue(),
+      date: getCurrentDateValue(),
       phoneNumber: form.phoneNumber.value.trim(),
       ninNumber: form.ninNumber.value.trim(),
       vehicleType: form.vehicleType.value,
@@ -231,6 +276,7 @@
 
   function resetForm() {
     form.reset();
+    setCurrentDateTimeFields();
     clearMessage();
     if (vehicleImagePreview) {
       vehicleImagePreview.style.display = "none";
@@ -259,6 +305,7 @@
 
     readFileAsDataURL(imageFile)
       .then((imageDataUrl) => {
+        values.ticketNumber = getNextTicketNumber();
         values.imageName = imageFile.name;
         values.imageDataUrl = imageDataUrl;
 

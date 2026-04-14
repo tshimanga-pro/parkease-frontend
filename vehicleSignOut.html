@@ -30,12 +30,12 @@
 
           <form id="signOutForm">
             <div class="search-row">
-              <label for="searchQuery">Search Receipt</label>
+              <label for="searchQuery">Search Ticket</label>
               <div class="search-controls">
                 <input
                   type="text"
                   id="searchQuery"
-                  placeholder="Receipt ID or Plate Number"
+                  placeholder="Ticket Number or Plate Number"
                 />
                 <button id="searchBtn" class="btn-submit" type="button">
                   Search
@@ -90,11 +90,14 @@
         <aside class="sidebar" id="sidebar">
           <h2>Matched Registration</h2>
           <div class="sidebar-message" id="sidebarMessage">
-            Search a receipt or plate to see details here.
+            Search a ticket or plate to see details here.
           </div>
           <div class="sidebar-details" id="sidebarDetails" hidden>
             <div class="sidebar-row">
               <strong>Driver:</strong> <span id="sbDriver">—</span>
+            </div>
+            <div class="sidebar-row">
+              <strong>Ticket:</strong> <span id="sbTicket">—</span>
             </div>
             <div class="sidebar-row">
               <strong>Plate:</strong> <span id="sbPlate">—</span>

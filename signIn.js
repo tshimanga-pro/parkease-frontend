@@ -97,6 +97,7 @@
       role: registeredUser.role,
       firstName: registeredUser.firstName,
       surname: registeredUser.surname,
+      loginTime: new Date().toISOString(),
     }));
 
     showMessage("Login successful! Redirecting...", "success");
