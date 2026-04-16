@@ -154,6 +154,15 @@
         }
       }
 
+      function getBatteryTransactions() {
+        try {
+          const raw = localStorage.getItem("parkEaseBatteryTransactions");
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      }
+
       function getBatteryRegistrations() {
         try {
           const raw = localStorage.getItem("parkEaseBatteries");
@@ -190,9 +199,9 @@
         });
       }
 
-      function getTodayBatteryRegistrations() {
+      function getTodayBatteryTransactions() {
         const todayKey = getTodayKey();
-        return getBatteryRegistrations().filter((entry) => {
+        return getBatteryTransactions().filter((entry) => {
           const createdKey = new Date(entry.createdAt).toISOString().slice(0, 10);
           return createdKey === todayKey;
         });
@@ -202,9 +211,9 @@
         const batteryRegistrations = getBatteryRegistrations();
         const tyreTransactions = getTyreTransactions();
         const todayTyreServices = getTodayTyreServices();
-        const todayBatteryRegistrations = getTodayBatteryRegistrations();
+        const todayBatteryTransactions = getTodayBatteryTransactions();
 
-        const batteryRevenueToday = todayBatteryRegistrations.reduce(
+        const batteryRevenueToday = todayBatteryTransactions.reduce(
           (sum, entry) => sum + parseUgandaShillings(entry.price),
           0,
         );
@@ -243,23 +252,23 @@
           }))
           .sort((a, b) => (a.time < b.time ? 1 : -1));
 
-        const batteryEntries = getBatteryRegistrations()
+        const batteryTransactions = getBatteryTransactions()
           .map((entry) => ({
             time: formatTime(entry.createdAt),
-            service: "Battery Registration",
-            item: `${entry.batteryBrand || "Battery"} ${entry.batteryType || ""}`.trim(),
-            status: "Registered",
+            service: `Battery ${entry.serviceType === "hire" ? "Hire" : "Sale"}`,
+            item: `${entry.batteryType || "Battery"} - ${entry.serviceType.charAt(0).toUpperCase() + entry.serviceType.slice(1)}`,
+            status: "Completed",
           }))
           .sort((a, b) => (a.time < b.time ? 1 : -1));
 
-        const rows = [...tyreTransactions, ...batteryEntries]
+        const rows = [...tyreTransactions, ...batteryTransactions]
           .slice(0, 10)
           .map((row) => `
                 <tr>
                   <td>${row.time}</td>
                   <td>${row.service}</td>
                   <td>${row.item}</td>
-                  <td><span class="status-badge ${row.status === "Completed" ? "parked" : "signed-out"}">${row.status}</span></td>
+                  <td><span class="status-badge parked">${row.status}</span></td>
                 </tr>
               `)
           .join("");

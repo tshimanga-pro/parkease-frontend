@@ -65,7 +65,7 @@
 
         <article class="metric-card">
           <div class="metric-card__header">
-            <h3 class="metric-card__title">Tyre Clinic</h3>
+            <h3 class="metric-card__title">Tyre Revenue</h3>
           </div>
           <div class="metric-card__value" id="tyreValue">UGX 1,320</div>
           <div class="metric-card__delta delta-negative" id="tyreDelta">
@@ -75,7 +75,7 @@
 
         <article class="metric-card">
           <div class="metric-card__header">
-            <h3 class="metric-card__title">Battery Transaction</h3>
+            <h3 class="metric-card__title">Battery Revenue</h3>
           </div>
           <div class="metric-card__value" id="batteryValue">UGX 950</div>
           <div class="metric-card__delta delta-positive" id="batteryDelta">
@@ -173,6 +173,13 @@
         }
       }
 
+      function parseUgandaShillings(value) {
+        if (value == null) return 0;
+        const cleaned = String(value).replace(/[^0-9.-]+/g, "");
+        const parsed = Number(cleaned);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
       function getLocalTyreRevenue(dateKey) {
         return getTyreTransactions()
           .filter((transaction) => {
@@ -180,14 +187,13 @@
             return transactionDate === dateKey;
           })
           .reduce((sum, transaction) => {
-            const amount = Number(transaction.grandTotal || 0);
-            return sum + (Number.isFinite(amount) ? amount : 0);
+            return sum + parseUgandaShillings(transaction.grandTotal);
           }, 0);
       }
 
-      function getBatteryRegistrations() {
+      function getBatteryTransactions() {
         try {
-          const raw = localStorage.getItem("parkEaseBatteries");
+          const raw = localStorage.getItem("parkEaseBatteryTransactions");
           return raw ? JSON.parse(raw) : [];
         } catch {
           return [];
@@ -195,13 +201,13 @@
       }
 
       function getLocalBatteryRevenue(dateKey) {
-        return getBatteryRegistrations()
-          .filter((battery) => {
-            const batteryDate = new Date(battery.createdAt).toISOString().slice(0, 10);
-            return batteryDate === dateKey;
+        return getBatteryTransactions()
+          .filter((entry) => {
+            const transactionDate = new Date(entry.createdAt).toISOString().slice(0, 10);
+            return transactionDate === dateKey;
           })
-          .reduce((sum, battery) => {
-            const priceValue = String(battery.price || "").replace(/[^0-9]/g, "");
+          .reduce((sum, entry) => {
+            const priceValue = String(entry.price || "").replace(/[^0-9.-]/g, "");
             return sum + (Number(priceValue) || 0);
           }, 0);
       }
